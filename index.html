@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía Definitiva de Sintaxis Markdown — Aprende con Ejemplos Interactivos</title>
+  <meta name="description" content="One-page interactiva con toda la sintaxis de Markdown (Básico, GitHub Flavored Markdown y Extendido), ejemplos comparativos y playground en vivo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: #161f33;
+      --bg-card-hover: #1c2740;
+      --bg-code: #090d16;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --border: #1f2937;
+      --border-highlight: #334155;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    html.light {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --bg-code: #0f172a;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-soft: rgba(2, 132, 199, 0.1);
+      --border: #e2e8f0;
+      --border-highlight: #cbd5e1;
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Progress Bar */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-purple), var(--accent-emerald));
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+    }
+
+    html.light .navbar {
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .navbar-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.55rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      max-width: 560px;
+      justify-content: flex-end;
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 340px;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 0.55rem 0.9rem 0.55rem 2.35rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-highlight);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-wrapper input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-highlight);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.92;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 4rem 1.5rem 2.5rem;
+      text-align: center;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.1rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 70%, var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.08rem;
+      max-width: 700px;
+      margin: 0 auto 1.75rem;
+    }
+
+    /* Category Pills */
+    .category-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      max-width: 1200px;
+      margin: 0 auto 2.5rem;
+      padding: 0 1.5rem;
+    }
+
+    .cat-pill {
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .cat-pill:hover, .cat-pill.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    /* Interactive Playground */
+    .playground-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+      box-shadow: var(--shadow);
+    }
+
+    .playground-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .playground-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .preset-buttons {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-highlight);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .playground-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 860px) {
+      .playground-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pane-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #md-input {
+      width: 100%;
+      min-height: 290px;
+      background: var(--bg-code);
+      color: #e2e8f0;
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+    }
+
+    #md-input:focus {
+      border-color: var(--accent);
+    }
+
+    #md-preview {
+      min-height: 290px;
+      max-height: 450px;
+      overflow-y: auto;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-sm);
+      padding: 1.15rem 1.35rem;
+    }
+
+    /* Section Block */
+    .syntax-section {
+      margin-bottom: 3.25rem;
+      scroll-margin-top: 85px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-num {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .section-header h2 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .syntax-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .syntax-card:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-2px);
+    }
+
+    .card-top {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .card-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.02rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-basic { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .tag-gfm { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+    .tag-ext { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .tag-tip { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+
+    .card-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .icon-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-highlight);
+      color: var(--text-secondary);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .icon-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .card-tip {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.87rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex: 1;
+    }
+
+    @media (max-width: 600px) {
+      .card-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .code-box {
+      background: var(--bg-code);
+      padding: 1rem 1.15rem;
+      border-right: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .box-header {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .preview-box {
+      padding: 1rem 1.15rem;
+      background: var(--bg-secondary);
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    /* Rendered Markdown Styles inside Preview Boxes */
+    .md-render h1, .md-render h2, .md-render h3, .md-render h4, .md-render h5, .md-render h6 {
+      margin: 0.35rem 0;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+    .md-render h1 { font-size: 1.55rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+    .md-render h2 { font-size: 1.3rem; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
+    .md-render h3 { font-size: 1.12rem; }
+    .md-render h4 { font-size: 1rem; }
+    .md-render h5 { font-size: 0.88rem; }
+    .md-render h6 { font-size: 0.8rem; color: var(--text-muted); }
+    .md-render p { margin-bottom: 0.55rem; }
+    .md-render ul, .md-render ol { padding-left: 1.4rem; margin-bottom: 0.55rem; }
+    .md-render li { margin-bottom: 0.2rem; }
+    .md-render code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      background: rgba(148, 163, 184, 0.16);
+      padding: 0.15rem 0.38rem;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    .md-render pre {
+      background: var(--bg-code);
+      color: #f8fafc;
+      padding: 0.75rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 0.4rem 0;
+    }
+    .md-render pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+    .md-render blockquote {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 0.55rem 0.85rem;
+      border-radius: 0 6px 6px 0;
+      margin: 0.45rem 0;
+      color: var(--text-secondary);
+    }
+    .md-render table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.4rem 0;
+      font-size: 0.84rem;
+    }
+    .md-render th, .md-render td {
+      border: 1px solid var(--border-highlight);
+      padding: 0.4rem 0.65rem;
+    }
+    .md-render th {
+      background: rgba(148, 163, 184, 0.1);
+      font-weight: 700;
+    }
+    .md-render hr {
+      border: none;
+      border-top: 2px solid var(--border-highlight);
+      margin: 0.75rem 0;
+    }
+    .md-render mark {
+      background: rgba(250, 204, 21, 0.3);
+      color: inherit;
+      padding: 0.05rem 0.25rem;
+      border-radius: 3px;
+    }
+    .md-render kbd {
+      background: var(--bg-card);
+      border: 1px solid var(--border-highlight);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+    .md-render a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* Alert boxes */
+    .gh-alert {
+      border-left: 4px solid;
+      padding: 0.55rem 0.85rem;
+      border-radius: 0 6px 6px 0;
+      margin: 0.45rem 0;
+      font-size: 0.84rem;
+    }
+    .gh-alert-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.15rem;
+    }
+    .gh-note { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); }
+    .gh-tip { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+    .gh-important { border-color: #a855f7; background: rgba(168, 85, 247, 0.1); }
+    .gh-warning { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+    .gh-caution { border-color: #f43f5e; background: rgba(244, 63, 94, 0.1); }
+
+    /* Toast notification */
+    #toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--accent-emerald);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.65rem 1.15rem;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 2000;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="brand">
+        <span class="brand-icon">M↓</span>
+        <span>Markdown Master Guide</span>
+      </a>
+
+      <div class="nav-controls">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Buscar sintaxis (ej. tabla, imagen, alerta, tarea)..." />
+        </div>
+        <a href="#playground" class="btn btn-primary">⚡ Playground</a>
+        <button class="btn" id="theme-toggle" title="Cambiar tema">☀️ / 🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge">✨ Guía Interactiva Completa • Estándar + GitHub Flavored Markdown</div>
+    <h1>Aprende Toda la Sintaxis de Markdown con Ejemplos Reales</h1>
+    <p>
+      Explora cada elemento de Markdown comparando el <strong>código fuente</strong> junto a su <strong>resultado visual</strong>. Copia cualquier fragmento con un clic o pruébalo en tiempo real en el editor interactivo.
+    </p>
+  </section>
+
+  <!-- Quick Navigation Pills -->
+  <nav class="category-nav">
+    <a href="#encabezados" class="cat-pill">1. Encabezados</a>
+    <a href="#enfasis" class="cat-pill">2. Énfasis y Texto</a>
+    <a href="#listas" class="cat-pill">3. Listas y Checklists</a>
+    <a href="#enlaces" class="cat-pill">4. Enlaces e Imágenes</a>
+    <a href="#citas" class="cat-pill">5. Citas y Alertas GFM</a>
+    <a href="#codigo" class="cat-pill">6. Código y Sintaxis</a>
+    <a href="#tablas" class="cat-pill">7. Tablas</a>
+    <a href="#extendido" class="cat-pill">8. Markdown Extendido</a>
+    <a href="#escapes" class="cat-pill">9. Trucos y Escapes</a>
+  </nav>
+
+  <main class="container">
+
+    <!-- LIVE PLAYGROUND -->
+    <section id="playground" class="playground-section">
+      <div class="playground-header">
+        <div class="playground-title">
+          <span>🧪</span>
+          <span>Playground Interactivo en Vivo</span>
+        </div>
+        <div class="preset-buttons">
+          <button class="preset-btn" onclick="loadPreset('readme')">📄 Plantilla README</button>
+          <button class="preset-btn" onclick="loadPreset('table')">📊 Tabla Comparativa</button>
+          <button class="preset-btn" onclick="loadPreset('checklist')">✅ Lista de Tareas</button>
+          <button class="preset-btn" onclick="loadPreset('alerts')">🚨 Alertas GitHub</button>
+          <button class="preset-btn" onclick="copyPlayground()">📋 Copiar Markdown</button>
+        </div>
+      </div>
+
+      <div class="playground-grid">
+        <div>
+          <div class="pane-label">
+            <span>✏️ Escribe tu Markdown aquí</span>
+            <span id="char-count">0 caracteres</span>
+          </div>
+          <textarea id="md-input" spellcheck="false"></textarea>
+        </div>
+        <div>
+          <div class="pane-label">
+            <span>👁️ Vista Previa en Tiempo Real</span>
+            <span>Renderizado HTML</span>
+          </div>
+          <div id="md-preview" class="md-render"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DYNAMIC SECTIONS CONTAINER -->
+    <div id="sections-container"></div>
+
+  </main>
+
+  <div id="toast">✅ ¡Código copiado al portapapeles!</div>
+
+  <footer>
+    <p>Hecho con ❤️ para aprender y dominar <strong>Markdown</strong> • Sintaxis Básica, GitHub Flavored Markdown (GFM) y Extensiones Modernas.</p>
+  </footer>
+
+  <script>
+    // Catalog of all Markdown syntax examples
+    const markdownSections = [
+      {
+        id: 'encabezados',
+        num: '01',
+        title: 'Encabezados (Headers)',
+        desc: 'Los encabezados estructuran tu documento desde el nivel 1 (título principal) hasta el nivel 6 (subtítulo menor).',
+        items: [
+          {
+            title: 'Encabezados con almohadilla (#)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Coloca de 1 a 6 símbolos # seguidos de un espacio. Usa siempre un solo H1 por documento.',
+            code: `# Encabezado H1 (Título)
+## Encabezado H2 (Sección)
+### Encabezado H3 (Subsección)
+#### Encabezado H4
+##### Encabezado H5
+###### Encabezado H6`,
+            html: `<h1>Encabezado H1 (Título)</h1>
+<h2>Encabezado H2 (Sección)</h2>
+<h3>Encabezado H3 (Subsección)</h3>
+<h4>Encabezado H4</h4>
+<h5>Encabezado H5</h5>
+<h6>Encabezado H6</h6>`
+          },
+          {
+            title: 'Sintaxis alternativa (Setext)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Puedes subrayar el texto con signos igual (===) para H1 o guiones (---) para H2.',
+            code: `Título Principal H1
+===================
+
+Subtítulo de Sección H2
+-----------------------`,
+            html: `<h1>Título Principal H1</h1>
+<h2>Subtítulo de Sección H2</h2>`
+          }
+        ]
+      },
+      {
+        id: 'enfasis',
+        num: '02',
+        title: 'Énfasis y Formato de Texto',
+        desc: 'Resalta palabras clave, añade matices o combina estilos para dar jerarquía visual a tus párrafos.',
+        items: [
+          {
+            title: 'Cursiva, Negrita y Combinado',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Usa 1 asterisco para cursiva, 2 para negrita y 3 para ambos a la vez.',
+            code: `*Texto en cursiva* o _cursiva con guion_
+
+**Texto en negrita** o __negrita con guion__
+
+***Negrita y cursiva al mismo tiempo***
+
+Texto con **palabras *anidadas* importantes**`,
+            html: `<p><em>Texto en cursiva</em> o <em>cursiva con guion</em></p>
+<p><strong>Texto en negrita</strong> o <strong>negrita con guion</strong></p>
+<p><strong><em>Negrita y cursiva al mismo tiempo</em></strong></p>
+<p>Texto con <strong>palabras <em>anidadas</em> importantes</strong></p>`
+          },
+          {
+            title: 'Tachado, Resaltado, Subíndice y Superíndice',
+            tag: 'GFM / Ext',
+            tagClass: 'tag-gfm',
+            tip: 'El doble virgulilla (~~) tacha texto en GitHub. El resaltado (==) y sub/superíndices funcionan en editores extendidos o con HTML.',
+            code: `~~Texto tachado o descartado~~
+
+==Texto resaltado con marcador==
+
+Fórmula del agua: H~2~O (o H<sub>2</sub>O)
+
+Teorema de Pitágoras: a^2^ + b^2^ = c^2^ (o x<sup>2</sup>)
+
+<ins>Texto subrayado con etiqueta HTML</ins>`,
+            html: `<p><del>Texto tachado o descartado</del></p>
+<p><mark>Texto resaltado con marcador</mark></p>
+<p>Fórmula del agua: H<sub>2</sub>O</p>
+<p>Teorema de Pitágoras: a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
+<p><ins>Texto subrayado con etiqueta HTML</ins></p>`
+          },
+          {
+            title: 'Párrafos y Saltos de Línea',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Deja una línea en blanco para crear un nuevo párrafo, o añade 2 espacios al final de una línea (o <br>) para un salto simple.',
+            code: `Primer párrafo de ejemplo. Deja una línea vacía debajo para separar.
+
+Segundo párrafo independiente.  
+Esta línea va pegada arriba usando dos espacios al final.`,
+            html: `<p>Primer párrafo de ejemplo. Deja una línea vacía debajo para separar.</p>
+<p>Segundo párrafo independiente.<br>Esta línea va pegada arriba usando dos espacios al final.</p>`
+          },
+          {
+            title: 'Líneas Horizontales (Separadores)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Escribe tres o más guiones (---), asteriscos (***) o guiones bajos (___) en una línea sola.',
+            code: `Sección Superior
+
+---
+
+Sección Intermedia
+
+***
+
+Sección Inferior`,
+            html: `<p>Sección Superior</p><hr><p>Sección Intermedia</p><hr><p>Sección Inferior</p>`
+          }
+        ]
+      },
+      {
+        id: 'listas',
+        num: '03',
+        title: 'Listas y Checklists de Tareas',
+        desc: 'Organiza pasos secuenciales, puntos clave o listas de tareas interactivas estilo GitHub.',
+        items: [
+          {
+            title: 'Listas Desordenadas (Viñetas)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Usa -, * o + seguidos de un espacio. Indenta con 2 o 4 espacios para crear sublistas anidadas.',
+            code: `- Elemento principal 1
+- Elemento principal 2
+  - Sub-elemento 2.1 (indentado)
+  - Sub-elemento 2.2
+    * Tercer nivel anidado
+- Elemento principal 3`,
+            html: `<ul>
+  <li>Elemento principal 1</li>
+  <li>Elemento principal 2
+    <ul>
+      <li>Sub-elemento 2.1 (indentado)</li>
+      <li>Sub-elemento 2.2
+        <ul><li>Tercer nivel anidado</li></ul>
+      </li>
+    </ul>
+  </li>
+  <li>Elemento principal 3</li>
+</ul>`
+          },
+          {
+            title: 'Listas Ordenadas (Numeradas)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Escribe el número seguido de un punto y espacio. Markdown numera automáticamente aunque uses "1." en todos.',
+            code: `1. Clonar el repositorio
+2. Instalar dependencias
+   1. Ejecutar npm install
+   2. Configurar variables .env
+3. Iniciar el servidor de desarrollo`,
+            html: `<ol>
+  <li>Clonar el repositorio</li>
+  <li>Instalar dependencias
+    <ol>
+      <li>Ejecutar npm install</li>
+      <li>Configurar variables .env</li>
+    </ol>
+  </li>
+  <li>Iniciar el servidor de desarrollo</li>
+</ol>`
+          },
+          {
+            title: 'Listas de Tareas (Checklists / Task Lists)',
+            tag: 'GFM',
+            tagClass: 'tag-gfm',
+            tip: 'Muy usadas en Issues y Pull Requests de GitHub: usa "- [ ]" para pendiente y "- [x]" para completado.',
+            code: `- [x] Diseñar la estructura HTML
+- [x] Incluir todos los ejemplos de Markdown
+- [ ] Añadir pruebas automatizadas
+- [ ] Publicar en GitHub Pages`,
+            html: `<ul style="list-style:none; padding-left:0.2rem;">
+  <li><input type="checkbox" checked disabled> Diseñar la estructura HTML</li>
+  <li><input type="checkbox" checked disabled> Incluir todos los ejemplos de Markdown</li>
+  <li><input type="checkbox" disabled> Añadir pruebas automatizadas</li>
+  <li><input type="checkbox" disabled> Publicar en GitHub Pages</li>
+</ul>`
+          }
+        ]
+      },
+      {
+        id: 'enlaces',
+        num: '04',
+        title: 'Enlaces e Imágenes',
+        desc: 'Conecta páginas externas, secciones internas del documento o incrusta recursos gráficos.',
+        items: [
+          {
+            title: 'Enlaces en Línea, con Título y Automáticos',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'El texto visible va entre corchetes [ ] y la URL entre paréntesis ( ). Puedes añadir un tooltip entre comillas.',
+            code: `[Ir a GitHub](https://github.com)
+
+[Documentación MDN](https://developer.mozilla.org "Pasa el cursor para ver este título")
+
+Enlace directo: <https://es.wikipedia.org>
+
+Correo directo: <contacto@ejemplo.com>`,
+            html: `<p><a href="https://github.com" target="_blank">Ir a GitHub</a></p>
+<p><a href="https://developer.mozilla.org" title="Pasa el cursor para ver este título" target="_blank">Documentación MDN</a></p>
+<p>Enlace directo: <a href="https://es.wikipedia.org" target="_blank">https://es.wikipedia.org</a></p>
+<p>Correo directo: <a href="mailto:contacto@ejemplo.com">contacto@ejemplo.com</a></p>`
+          },
+          {
+            title: 'Enlaces por Referencia y Anclas Internas',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Mantén limpio tu texto definiendo las URLs al final del archivo mediante etiquetas [id]: url.',
+            code: `Aprende más en la [Guía Oficial][guia-md] o salta a la sección de [Tablas](#tablas).
+
+[guia-md]: https://www.markdownguide.org "Sitio oficial de Markdown"`,
+            html: `<p>Aprende más en la <a href="https://www.markdownguide.org" title="Sitio oficial de Markdown" target="_blank">Guía Oficial</a> o salta a la sección de <a href="#tablas">Tablas</a>.</p>`
+          },
+          {
+            title: 'Imágenes e Imágenes con Enlace (Badges)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Igual que un enlace pero precedido por un signo de exclamación (!). Envuelve la imagen en [ ![alt](img) ](url) para hacerla clicable.',
+            code: `![Logo Markdown](https://upload.wikimedia.org/wikipedia/commons/4/48/Markdown-mark.svg "Logo Oficial")
+
+<!-- Imagen clicable (Badge) -->
+[![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-38bdf8.svg)](https://opensource.org/licenses/MIT)`,
+            html: `<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Markdown-mark.svg" alt="Logo Markdown" title="Logo Oficial" style="height:48px; background:#fff; padding:6px; border-radius:6px;"></p>
+<p><a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/Licencia-MIT-38bdf8.svg" alt="Licencia MIT"></a></p>`
+          }
+        ]
+      },
+      {
+        id: 'citas',
+        num: '05',
+        title: 'Citas (Blockquotes) y Alertas de GitHub',
+        desc: 'Destaca citas textuales, notas importantes o bloques de advertencia.',
+        items: [
+          {
+            title: 'Citas Simples y Anidadas',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Antepón el símbolo mayor que (>) a cada línea. Usa >> para anidar una cita dentro de otra.',
+            code: `> "La simplicidad es la máxima sofisticación."
+> — **Leonardo da Vinci**
+>
+> > Cita secundaria anidada con comentario adicional.`,
+            html: `<blockquote>
+  <p>"La simplicidad es la máxima sofisticación."<br>— <strong>Leonardo da Vinci</strong></p>
+  <blockquote><p>Cita secundaria anidada con comentario adicional.</p></blockquote>
+</blockquote>`
+          },
+          {
+            title: 'Alertas Especiales (GitHub Callouts)',
+            tag: 'GFM',
+            tagClass: 'tag-gfm',
+            tip: 'GitHub soporta 5 tipos de bloques de alerta usando [!NOTE], [!TIP], [!IMPORTANT], [!WARNING] y [!CAUTION].',
+            code: `> [!NOTE]
+> Información útil que el lector debe tener en cuenta.
+
+> [!TIP]
+> Consejo práctico para hacerlo mejor o más rápido.
+
+> [!IMPORTANT]
+> Información clave necesaria para tener éxito.
+
+> [!WARNING]
+> Atención: posibles riesgos o cambios incompatibles.
+
+> [!CAUTION]
+> Peligro de pérdida de datos o acción irreversible.`,
+            html: `<div class="gh-alert gh-note"><div class="gh-alert-title">ℹ️ Note</div>Información útil que el lector debe tener en cuenta.</div>
+<div class="gh-alert gh-tip"><div class="gh-alert-title">💡 Tip</div>Consejo práctico para hacerlo mejor o más rápido.</div>
+<div class="gh-alert gh-important"><div class="gh-alert-title">🟣 Important</div>Información clave necesaria para tener éxito.</div>
+<div class="gh-alert gh-warning"><div class="gh-alert-title">⚠️ Warning</div>Atención: posibles riesgos o cambios incompatibles.</div>
+<div class="gh-alert gh-caution"><div class="gh-alert-title">🛑 Caution</div>Peligro de pérdida de datos o acción irreversible.</div>`
+          }
+        ]
+      },
+      {
+        id: 'codigo',
+        num: '06',
+        title: 'Código en Línea y Bloques de Código',
+        desc: 'Muestra comandos, fragmentos de programación con coloreado de sintaxis o comparativas de cambios (diffs).',
+        items: [
+          {
+            title: 'Código en Línea (Inline Code)',
+            tag: 'Básico',
+            tagClass: 'tag-basic',
+            tip: 'Envuelve el comando o variable entre comillas invertidas simples (`backticks`).',
+            code: `Ejecuta \`npm run build\` para compilar el archivo \`index.html\`.
+
+Para mostrar un backtick dentro de código usa doble comilla: \`\` \`hola\` \`\`.`,
+            html: `<p>Ejecuta <code>npm run build</code> para compilar el archivo <code>index.html</code>.</p>
+<p>Para mostrar un backtick dentro de código usa doble comilla: <code>\`hola\`</code>.</p>`
+          },
+          {
+            title: 'Bloques de Código con Resaltado de Sintaxis',
+            tag: 'GFM',
+            tagClass: 'tag-gfm',
+            tip: 'Usa tres comillas invertidas (```) seguidas del nombre del lenguaje (js, python, html, bash, sql, json, css).',
+            code: `\`\`\`javascript
+function saludar(nombre) {
+  return \`¡Hola, \${nombre}! Bienvenido a Markdown.\`;
+}
+console.log(saludar("Mundo"));
+\`\`\``,
+            html: `<pre><code><span style="color:#c084fc">function</span> <span style="color:#38bdf8">saludar</span>(nombre) {
+  <span style="color:#c084fc">return</span> <span style="color:#34d399">\`¡Hola, \${nombre}! Bienvenido a Markdown.\`</span>;
+}
+console.<span style="color:#38bdf8">log</span>(saludar(<span style="color:#34d399">"Mundo"</span>));</code></pre>`
+          },
+          {
+            title: 'Bloques Diff (Mostrar líneas añadidas y eliminadas)',
+            tag: 'GFM',
+            tagClass: 'tag-gfm',
+            tip: 'Usa el lenguaje "diff" y empieza las líneas con "-" (rojo, eliminado) o "+" (verde, añadido).',
+            code: `\`\`\`diff
+  const puerto = 3000;
+- app.listen(puerto);
++ app.listen(puerto, () => console.log("Servidor listo"));
+\`\`\``,
+            html: `<pre><code>  const puerto = 3000;
+<span style="color:#f43f5e; background:rgba(244,63,94,0.15); display:block;">- app.listen(puerto);</span><span style="color:#10b981; background:rgba(16,185,129,0.15); display:block;">+ app.listen(puerto, () =&gt; console.log("Servidor listo"));</span></code></pre>`
+          }
+        ]
+      },
+      {
+        id: 'tablas',
+        num: '07',
+        title: 'Tablas y Alineación de Columnas',
+        desc: 'Crea tablas estructuradas utilizando tuberías (|) y guiones (-), con control de alineación por columna.',
+        items: [
+          {
+            title: 'Tabla con Alineación (Izquierda, Centro, Derecha)',
+            tag: 'GFM',
+            tagClass: 'tag-gfm',
+            tip: 'Usa :--- para alinear a la izquierda, :---: para centrar y ---: para alinear a la derecha.',
+            code: `| Comando | Descripción | Atajo |
+| :--- | :---: | ---: |
+| **Negrita** | Destaca texto | \`Ctrl + B\` |
+| *Cursiva* | Énfasis suave | \`Ctrl + I\` |
+| [Enlace](#) | Inserta URL | \`Ctrl + K\` |`,
+            html: `<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Comando</th>
+      <th style="text-align:center">Descripción</th>
+      <th style="text-align:right">Atajo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left"><strong>Negrita</strong></td>
+      <td style="text-align:center">Destaca texto</td>
+      <td style="text-align:right"><code>Ctrl + B</code></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><em>Cursiva</em></td>
+      <td style="text-align:center">Énfasis suave</td>
+      <td style="text-align:right"><code>Ctrl + I</code></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><a href="#">Enlace</a></td>
+      <td style="text-align:center">Inserta URL</td>
+      <td style="text-align:right"><code>Ctrl + K</code></td>
+    </tr>
+  </tbody>
+</table>`
+          }
+        ]
+      },
+      {
+        id: 'extendido',
+        num: '08',
+        title: 'Markdown Extendido y Elementos Avanzados',
+        desc: 'Notas al pie, desplegables interactivos, matemáticas LaTeX, teclas de atajo y diagramas.',
+        items: [
+          {
+            title: 'Secciones Desplegables (Acordeón con <details>)',
+            tag: 'HTML / GFM',
+            tagClass: 'tag-ext',
+            tip: 'Ideal para ocultar logs largos, respuestas a preguntas frecuentes o soluciones de ejercicios en GitHub.',
+            code: `<details>
+  <summary>👉 Haz clic para ver la solución oculta</summary>
+  
+  ¡Sorpresa! Puedes usar **Markdown** dentro dejando una línea en blanco después de \`</summary>\`.
+</details>`,
+            html: `<details style="background:var(--bg-card); padding:0.65rem 0.9rem; border-radius:6px; border:1px solid var(--border-highlight); cursor:pointer;">
+  <summary style="font-weight:700;">👉 Haz clic para ver la solución oculta</summary>
+  <p style="margin-top:0.5rem; margin-bottom:0;">¡Sorpresa! Puedes usar <strong>Markdown</strong> dentro dejando una línea en blanco después de <code>&lt;/summary&gt;</code>.</p>
+</details>`
+          },
+          {
+            title: 'Notas al Pie (Footnotes)',
+            tag: 'Extendido',
+            tagClass: 'tag-ext',
+            tip: 'Añade referencias bibliográficas o aclaraciones con [^1] y defínelas al final del documento.',
+            code: `Markdown fue creado por John Gruber en 2004[^1] con ayuda de Aaron Swartz[^nota].
+
+[^1]: Publicado originalmente en Daring Fireball.
+[^nota]: Pensado para ser fácil de leer y escribir en texto plano.`,
+            html: `<p>Markdown fue creado por John Gruber en 2004<sup><a href="#fn1">[1]</a></sup> con ayuda de Aaron Swartz<sup><a href="#fn2">[2]</a></sup>.</p>
+<hr>
+<small style="color:var(--text-secondary); display:block;">1. Publicado originalmente en Daring Fireball.<br>2. Pensado para ser fácil de leer y escribir en texto plano.</small>`
+          },
+          {
+            title: 'Teclas de Teclado (<kbd>) y Emojis (:emoji:)',
+            tag: 'GFM / HTML',
+            tagClass: 'tag-gfm',
+            tip: 'Usa la etiqueta <kbd> para representar combinaciones de teclado y códigos :nombre: para emojis en GitHub.',
+            code: `Presiona <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> para abrir la paleta.
+
+¡Proyecto desplegado con éxito! :rocket: :sparkles: :tada:`,
+            html: `<p>Presiona <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> para abrir la paleta.</p>
+<p>¡Proyecto desplegado con éxito! 🚀 ✨ 🎉</p>`
+          },
+          {
+            title: 'Fórmulas Matemáticas (LaTeX / KaTeX) y Mermaid',
+            tag: 'Extendido',
+            tagClass: 'tag-ext',
+            tip: 'Usa $...$ para ecuaciones en línea, $$...$$ para bloques matemáticos y bloques ```mermaid para diagramas.',
+            code: `Ecuación en línea: $E = mc^2$
+
+Bloque matemático:
+$$
+x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}
+$$
+
+\`\`\`mermaid
+graph LR
+  A[Markdown] --> B(Parser)
+  B --> C{HTML Final}
+\`\`\``,
+            html: `<p>Ecuación en línea: <em>E = mc²</em></p>
+<div style="text-align:center; padding:0.5rem; background:rgba(148,163,184,0.08); border-radius:6px; margin-bottom:0.6rem; font-family:serif; font-size:1.05rem;">
+  <em>x</em> = ( −<em>b</em> ± √(<em>b</em>² − 4<em>ac</em>) ) / 2<em>a</em>
+</div>
+<div style="display:flex; align-items:center; justify-content:center; gap:0.5rem; font-size:0.8rem; font-weight:600;">
+  <span style="padding:0.3rem 0.6rem; background:var(--accent-soft); border:1px solid var(--accent); border-radius:4px;">Markdown</span> →
+  <span style="padding:0.3rem 0.6rem; background:var(--bg-card); border:1px solid var(--border-highlight); border-radius:99px;">Parser</span> →
+  <span style="padding:0.3rem 0.6rem; background:rgba(16,185,129,0.15); border:1px solid #10b981; border-radius:4px;">HTML Final</span>
+</div>`
+          }
+        ]
+      },
+      {
+        id: 'escapes',
+        num: '09',
+        title: 'Caracteres de Escape y Comentarios',
+        desc: 'Cómo mostrar símbolos reservados de Markdown literalmente sin que se conviertan en formato.',
+        items: [
+          {
+            title: 'Escapar Caracteres con Barra Invertida (\\)',
+            tag: 'Truco',
+            tagClass: 'tag-tip',
+            tip: 'Coloca una barra invertida (\\) antes de *, _, #, `, [, ], (, ), !, | para mostrarlos como texto normal.',
+            code: `\\*Esto NO está en cursiva\\*
+
+\\# Esto NO es un encabezado H1
+
+\\[Esto NO es un enlace\\](https://ejemplo.com)`,
+            html: `<p>*Esto NO está en cursiva*</p>
+<p># Esto NO es un encabezado H1</p>
+<p>[Esto NO es un enlace](https://ejemplo.com)</p>`
+          },
+          {
+            title: 'Comentarios Ocultos (No visibles al renderizar)',
+            tag: 'Truco',
+            tagClass: 'tag-tip',
+            tip: 'Usa comentarios HTML estándar para dejar notas privadas para los editores del archivo .md.',
+            code: `Texto público visible para todos los lectores.
+
+<!-- TODO: Actualizar las capturas de pantalla antes del lanzamiento -->
+
+Más contenido visible debajo del comentario.`,
+            html: `<p>Texto público visible para todos los lectores.</p>
+<p>Más contenido visible debajo del comentario.</p>`
+          }
+        ]
+      }
+    ];
+
+    // Render all sections
+    const container = document.getElementById('sections-container');
+
+    function renderSections(filterText = '') {
+      const query = filterText.trim().toLowerCase();
+      container.innerHTML = '';
+
+      markdownSections.forEach(sec => {
+        const filteredItems = sec.items.filter(item => {
+          if (!query) return true;
+          return (
+            sec.title.toLowerCase().includes(query) ||
+            item.title.toLowerCase().includes(query) ||
+            item.tip.toLowerCase().includes(query) ||
+            item.code.toLowerCase().includes(query)
+          );
+        });
+
+        if (filteredItems.length === 0) return;
+
+        const sectionEl = document.createElement('section');
+        sectionEl.className = 'syntax-section';
+        sectionEl.id = sec.id;
+
+        const cardsHtml = filteredItems.map((item, idx) => {
+          const encodedCode = encodeURIComponent(item.code);
+          return `
+            <article class="syntax-card">
+              <div class="card-top">
+                <div class="card-title-wrap">
+                  <span class="card-title">${item.title}</span>
+                  <span class="tag ${item.tagClass}">${item.tag}</span>
+                </div>
+                <div class="card-actions">
+                  <button class="icon-btn" onclick="sendToPlayground('${encodedCode}')" title="Probar en el Playground">⚡ Probar</button>
+                  <button class="icon-btn" onclick="copyCode('${encodedCode}')" title="Copiar código Markdown">📋 Copiar</button>
+                </div>
+              </div>
+              <div class="card-tip">💡 ${item.tip}</div>
+              <div class="card-split">
+                <div class="code-box"><span class="box-header">📝 Sintaxis Markdown</span>${escapeHtml(item.code)}</div>
+                <div class="preview-box md-render"><span class="box-header">👁️ Resultado Renderizado</span>${item.html}</div>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        sectionEl.innerHTML = `
+          <div class="section-header">
+            <span class="section-num">${sec.num}</span>
+            <h2>${sec.title}</h2>
+          </div>
+          <p class="section-desc">${sec.desc}</p>
+          <div class="cards-grid">${cardsHtml}</div>
+        `;
+
+        container.appendChild(sectionEl);
+      });
+
+      if (container.innerHTML === '') {
+        container.innerHTML = `
+          <div style="text-align:center; padding:3rem; color:var(--text-secondary);">
+            <h3>🔍 No encontramos resultados para "${escapeHtml(filterText)}"</h3>
+            <p>Intenta buscar términos como <code>tabla</code>, <code>negrita</code>, <code>enlace</code>, <code>código</code> o <code>alerta</code>.</p>
+          </div>
+        `;
+      }
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    // Simple & fast live Markdown parser for the Playground
+    function parseMarkdown(md) {
+      let html = escapeHtml(md);
+
+      // Code blocks ```lang ... ```
+      html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+        return `<pre><code>${code.trim()}</code></pre>`;
+      });
+
+      // GitHub Alerts
+      html = html.replace(/^&gt; \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n(&gt; .*(?:\n&gt; .*)*)/gm, (_, type, content) => {
+        const cleanText = content.replace(/^&gt; ?/gm, '');
+        const lower = type.toLowerCase();
+        const icons = { note: 'ℹ️ Note', tip: '💡 Tip', important: '🟣 Important', warning: '⚠️ Warning', caution: '🛑 Caution' };
+        return `<div class="gh-alert gh-${lower}"><div class="gh-alert-title">${icons[lower]}</div>${cleanText}</div>`;
+      });
+
+      // Blockquotes
+      html = html.replace(/^&gt; (.*)$/gm, '<blockquote>$1</blockquote>');
+
+      // Headings
+      html = html.replace(/^###### (.*)$/gm, '<h6>$1</h6>');
+      html = html.replace(/^##### (.*)$/gm, '<h5>$1</h5>');
+      html = html.replace(/^#### (.*)$/gm, '<h4>$1</h4>');
+      html = html.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.*)$/gm, '<h1>$1</h1>');
+
+      // Horizontal rules
+      html = html.replace(/^(?:---|\*\*\*|___)$/gm, '<hr>');
+
+      // Tables
+      html = html.replace(/^\|(.+)\|\n\|([-:\s|]+)\|\n((?:\|.*\|\n?)+)/gm, (_, headerLine, alignLine, bodyLines) => {
+        const headers = headerLine.split('|').map(s => s.trim()).filter(Boolean);
+        const aligns = alignLine.split('|').map(s => s.trim()).filter(Boolean).map(a => {
+          if (a.startsWith(':') && a.endsWith(':')) return 'center';
+          if (a.endsWith(':')) return 'right';
+          return 'left';
+        });
+        const ths = headers.map((h, i) => `<th style="text-align:${aligns[i] || 'left'}">${h}</th>`).join('');
+        const rows = bodyLines.trim().split('\n').map(row => {
+          const cells = row.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+          const tds = cells.map((c, i) => `<td style="text-align:${aligns[i] || 'left'}">${c}</td>`).join('');
+          return `<tr>${tds}</tr>`;
+        }).join('');
+        return `<table><thead><tr>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
+      });
+
+      // Checklists
+      html = html.replace(/^- \[x\] (.*)$/gim, '<div style="margin:0.2rem 0;"><input type="checkbox" checked disabled> $1</div>');
+      html = html.replace(/^- \[ \] (.*)$/gm, '<div style="margin:0.2rem 0;"><input type="checkbox" disabled> $1</div>');
+
+      // Unordered & ordered lists
+      html = html.replace(/^\s*[-*+] (.*)$/gm, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+
+      // Images & Links
+      html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)/g, '<img src="$2" alt="$1" title="$3" style="max-height:70px; border-radius:6px;">');
+      html = html.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)/g, '<a href="$2" title="$3" target="_blank">$1</a>');
+
+      // Inline formatting
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      html = html.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+      html = html.replace(/==([^=]+)==/g, '<mark>$1</mark>');
+
+      // Line breaks for remaining lines
+      html = html.replace(/\n\n/g, '<br><br>');
+      return html;
+    }
+
+    // Playground presets
+    const presets = {
+      readme: `# 🚀 Mi Proyecto Increíble
+
+Bienvenido a la documentación interactiva en **Markdown**. Aquí puedes probar *cursivas*, **negritas**, ~~tachados~~ y ==resaltados==.
+
+> [!TIP]
+> Edita cualquier línea a la izquierda y observa cómo se actualiza al instante.
+
+## 📦 Instalación Rápida
+
+\`\`\`bash
+git clone https://github.com/usuario/proyecto.git
+cd proyecto && npm install
+\`\`\`
+
+### Tareas del Lanzamiento
+- [x] Crear estructura del repositorio
+- [x] Escribir guía de sintaxis Markdown
+- [ ] Compartir en GitHub`,
+      table: `## 📊 Comparativa de Tecnologías
+
+| Lenguaje | Uso Principal | Nivel |
+| :--- | :---: | ---: |
+| **Markdown** | Documentación y Notas | \`Fácil\` |
+| *HTML5* | Estructura Web | \`Intermedio\` |
+| **JavaScript** | Interactividad Dinámica | \`Avanzado\` |`,
+      checklist: `## ✅ Plan de Aprendizaje Markdown
+
+- [x] Dominar encabezados \`# H1\` a \`###### H6\`
+- [x] Aprender formato en **negrita** y *cursiva*
+- [x] Crear enlaces a [GitHub](https://github.com)
+- [ ] Practicar tablas con alineación
+- [ ] Añadir bloques de alerta \`[!NOTE]\``,
+      alerts: `> [!NOTE]
+> Los archivos Markdown usan la extensión \`.md\` o \`.markdown\`.
+
+> [!WARNING]
+> Recuerda dejar un espacio después del símbolo \`#\` en tus títulos.`
+    };
+
+    const mdInput = document.getElementById('md-input');
+    const mdPreview = document.getElementById('md-preview');
+    const charCount = document.getElementById('char-count');
+
+    function updatePlayground() {
+      const val = mdInput.value;
+      charCount.textContent = `${val.length} caracteres`;
+      mdPreview.innerHTML = parseMarkdown(val);
+    }
+
+    function loadPreset(name) {
+      mdInput.value = presets[name] || presets.readme;
+      updatePlayground();
+    }
+
+    function sendToPlayground(encoded) {
+      mdInput.value = decodeURIComponent(encoded);
+      updatePlayground();
+      document.getElementById('playground').scrollIntoView({ behavior: 'smooth' });
+      showToast('⚡ ¡Cargado en el Playground!');
+    }
+
+    function copyCode(encoded) {
+      const text = decodeURIComponent(encoded);
+      navigator.clipboard.writeText(text);
+      showToast('✅ ¡Código copiado al portapapeles!');
+    }
+
+    function copyPlayground() {
+      navigator.clipboard.writeText(mdInput.value);
+      showToast('✅ ¡Markdown del Playground copiado!');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    // Search filter
+    document.getElementById('search-input').addEventListener('input', e => {
+      renderSections(e.target.value);
+    });
+
+    // Theme toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('light');
+    });
+
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+    });
+
+    // Initialize
+    mdInput.addEventListener('input', updatePlayground);
+    renderSections();
+    loadPreset('readme');
+  </script>
+</body>
+</html>
+
